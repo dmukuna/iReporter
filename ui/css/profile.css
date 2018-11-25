@@ -51,7 +51,7 @@ span,.btn{
 
 .container{
   width: 90%;
-  height: 350px;
+  height: 470px;
   background: #fff;
   border-radius: 5px;
 }
@@ -84,7 +84,7 @@ span,.btn{
 .btn{
   position: absolute;
   top: 70%;
-  left: 35%;
+  left: 30%;
   border: 2px solid #fff;
   padding: 8px 30px;
   border-radius: 50px;
@@ -114,3 +114,13 @@ span,.btn{
     height: 30%;
     background: #00ba18
   }
+
+.list-flags {
+  width: 50%;
+  float: left;
+}
+
+.list-interventions {
+  width: 50%;
+  float:right;
+}
