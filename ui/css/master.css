@@ -269,3 +269,19 @@ hr {
   width:auto;
   align: right;
 }
+
+.text1 {
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 65%;
+  float: left;
+  text-align: justify;
+}
+
+.text2 {
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 35%;
+  float: right;
+  text-align: justify;
+}
