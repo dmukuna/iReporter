@@ -11,6 +11,10 @@ body{
   font-family: 'Roboto', sans-serif;
 }
 
+h2 {
+  color: white;
+  text-align: center;
+}
 
 ul{
     width: 80%;
