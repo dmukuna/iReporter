@@ -228,7 +228,7 @@ table, th, td {
 }
 
 .container a:link, .container a:visited {
-    width: 45%;
+    width: 47%;
     background-color: lightgreen;
     color: Black;
     margin-top: 5px;
@@ -244,10 +244,8 @@ table, th, td {
 
 .r {
   float: left;
-  width: 45%;
 }
 
 .i {
   float: right;
-  width: 45%;
 }
