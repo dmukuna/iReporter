@@ -1,0 +1,35 @@
+form label {
+  width: 100%;
+  display:inline-table;
+  text-align: left;
+  padding: 5px;
+  float: left;
+}
+form input {
+  padding: 2px 5px;
+}
+#alert {
+  color: red;
+}
+
+.r-container {
+  padding-left: 350px;
+  padding-right: 350px;
+}
+
+label {
+  float: left;
+  padding-left: 5px;
+
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
