@@ -1,0 +1,72 @@
+#issues-tbl {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#issues-tbl td, #issues-tbl th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#issues-tbl tr:nth-child(even){background-color: #f2f2f2;}
+
+#issues-tbl tr:hover {background-color: #ddd;}
+
+#issues-tbl th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+#issues-tbl-i {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#issues-tbl-i td, #issues-tbl-i th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#issues-tbl-i tr:nth-child(even){background-color: #f2f2f2;}
+
+#issues-tbl-i tr:hover {background-color: #ddd;}
+
+#issues-tbl-i th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+table {
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.tbl-btn button {
+  text-align: center;
+}
+
+.approve {
+  width: 100%;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.reject {
+  width: 100%;
+  background-color: #f44336;
+  border-radius: 12px;
+  text-align: center;
+}
