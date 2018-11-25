@@ -22,15 +22,16 @@
     font-size: 16px;
     border: none;
     outline: none;
-    color: white;
+    color: #333;
     padding: 14px 16px;
     background-color: inherit;
     font-family: inherit;
     margin: 0;
+    text-decoration: inherit;
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: red;
+    background-color: green;
 }
 
 .dropdown-content {
@@ -52,7 +53,7 @@
 }
 
 .dropdown-content a:hover {
-    background-color: #ddd;
+    background-color: green;
 }
 
 .dropdown:hover .dropdown-content {
@@ -105,6 +106,7 @@ body {
 
 .topnav .login-container-top button {
   float: right;
+  width: 19%;
   padding: 6px 10px;
   margin-top: 8px;
   margin-right: 16px;
@@ -119,6 +121,15 @@ body {
   background-color: green;
 }
 
+.background-image {
+  padding-left: 350px;
+}
+
+.signup-container {
+  width: 60%;
+  padding-left: 350px;
+  padding-right: auto;
+}
 @media screen and (max-width: 600px) {
   .topnav .login-container-top {
     float: none;
@@ -254,4 +265,7 @@ hr {
 
 .signup-link {
   float: right;
+  padding-left: 10px;
+  width:auto;
+  align: right;
 }
