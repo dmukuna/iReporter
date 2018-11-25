@@ -229,6 +229,7 @@ table, th, td {
 
 .container a:link, .container a:visited {
     width: 47%;
+    height: 55px;
     background-color: lightgreen;
     color: Black;
     margin-top: 5px;
