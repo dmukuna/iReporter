@@ -43,6 +43,8 @@ span,.btn{
 }
 
 .wrapper{
+  padding-left: 15px;
+  padding-right: 15px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -123,4 +125,123 @@ span,.btn{
 .list-interventions {
   width: 50%;
   float:right;
+}
+
+.list-container {
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#issues-tbl {
+  text-decoration-color: black;
+  background-color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#issues-tbl {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#issues-tbl td, #issues-tbl th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#issues-tbl tr:nth-child(even){background-color: #f2f2f2;}
+
+#issues-tbl tr:hover {background-color: #ddd;}
+
+#issues-tbl th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+#issues-tbl-i {
+  text-decoration-color: black;
+  background-color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#issues-tbl-i {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#issues-tbl-i td, #issues-tbl-i th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#issues-tbl-i tr:nth-child(even){background-color: #f2f2f2;}
+
+#issues-tbl-i tr:hover {background-color: #ddd;}
+
+#issues-tbl-i th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+table {
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.tbl-btn button {
+  text-align: center;
+}
+
+.container a:link {
+    text-decoration: none;
+}
+
+.container a:visited {
+    text-decoration: none;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}
+
+.container a:active {
+    text-decoration: underline;
+}
+
+.container a:link, .container a:visited {
+    width: 45%;
+    background-color: lightgreen;
+    color: Black;
+    margin-top: 5px;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.container a:hover, .container a:active {
+    background-color: gray;
+}
+
+.r {
+  float: left;
+}
+
+.i {
+  float: right;
 }
