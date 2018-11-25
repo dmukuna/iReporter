@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <title>Red-flag</title>
+    <link rel="stylesheet" href="css/issues.css">
+    <link rel="stylesheet" href="css/master.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript">
+      var x = document.getElementById("demo");
+
+      function showError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation."
+                break;
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable."
+                break;
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out."
+                break;
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred."
+                break;
+        }
+      }
+
+      function showPosition(position) {
+        var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+        var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=750x300&sensor=false&key=AIzaSyDoEF_h66DXyPIRQjFb3D3RKp1kX8pN7DU ";
+
+        document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+      }
+
+      function getLocation() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition, showError);
+          } else {
+              x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+      }
+
+    </script>
+  </head>
+  <body>
+    <div class="navbar topnav">
+      <a href="index.html">iReporter</a>
+
+      <div class="dropdown">
+        <button class="dropbtn">Report issue
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="red-flag.html">Raise Red-flag</a>
+          <a href="intervention.html">Call for intervention</a>
+        </div>
+      </div>
+
+      <a href="profile.html">Profile</a>
+      <a href="#Admin">Admin</a>
+    </div>
+    <div class="r-container">
+      <h2>Raise a red-flag</h2>
+      <form class="form" method="post">
+        <label for="issue"><b>Issue:</b></label>
+        <input type="text" placeholder="Red flag issue" name="issue" required>
+
+        <label for="description" ><b>Description:</b></label>
+        <textarea name="description" placeholder="Please describe the issue at hand"></textarea>
+
+        <label for="imageToUpload"><b>Upload image:</b></label></br>
+        <input type="file" name="fileToUpload" id="imageToUpload" accept="image/*"></br>
+
+        <label for="videoToUpload"><b>Upload video:</b></label></br>
+        <input type="file" name="videoToUpload" id="videoToUpload" accept="video/*"></br>
+
+        <label for="location"><b>Click to get your location:</b></label></br>
+        <input type="button" onclick="getLocation();" value="location" name="location"/>
+        <div id="mapholder"></div>
+        <button type="submit" >Submit</button>
+      </form>
+
+      <!--<script src="js/location.js"></script>-->
+    </div>
+  </body>
+</html>
