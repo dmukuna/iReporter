@@ -244,8 +244,10 @@ table, th, td {
 
 .r {
   float: left;
+  width: 45%;
 }
 
 .i {
   float: right;
+  width: 45%;
 }
