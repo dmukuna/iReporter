@@ -250,3 +250,16 @@ table, th, td {
 .i {
   float: right;
 }
+
+.edit {
+  width: 100%;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.delete {
+  width: 100%;
+  background-color: #f44336;
+  border-radius: 12px;
+  text-align: center;
+}
