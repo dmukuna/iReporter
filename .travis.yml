@@ -6,6 +6,7 @@ install:
   - pip install coveralls codecov
 script:
   - py.test
+  - coveralls
 after-success:
   - coveralls
   - codecov --token
