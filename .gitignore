@@ -98,3 +98,10 @@ Thumbs.db
 !.gitignore
 !.editorconfig
 !.phpcs.xml.dist
+
+
+*.h
+/env
+/bin
+/include
+/lib

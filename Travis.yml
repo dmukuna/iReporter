@@ -1,0 +1,10 @@
+language:
+  python
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls codecov
+script:
+  - py.test --with -coverage test/v1/test_redflags.py
+after-success:
+  - coveralls
+  - codecov --token
