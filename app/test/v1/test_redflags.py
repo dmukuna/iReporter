@@ -1,6 +1,6 @@
 """import unittesting module"""
 import unittest
-import json
+from flask import json
 from app import create_app
 
 
