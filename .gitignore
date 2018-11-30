@@ -101,7 +101,9 @@ Thumbs.db
 
 
 *.h
+*.pyc
 /env
 /bin
 /include
 /lib
+/__pycache__
