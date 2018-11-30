@@ -5,7 +5,7 @@ from flask import jsonify, make_response, request
 #pylint: disable=import-error
 from flask_restful import Resource
 
-from .models import RedFlagsModel
+from .models import RedFlagsModel, RED_FLAGS_LIST
 
 
 class RedFlags(Resource, RedFlagsModel):
@@ -48,4 +48,22 @@ class RedFlags(Resource, RedFlagsModel):
         return make_response(jsonify({
             "status": 200,
             "data": resp
+        }), 200)
+
+class RedFlag(RedFlags):
+    """class for PUT, delete and GETTING A SPECIFIC RECORD"""
+    def __init__(self):
+        super(RedFlag, self).__init__()
+        self.database = RED_FLAGS_LIST
+
+    #pylint: disable=arguments-differ
+    def get(self, flag_id):
+        red_flag = [record for record in self.database if record['id'] == flag_id]
+        if red_flag == []:
+            return make_response(jsonify({
+                "status": 404,
+                "error": "The specified red-flag does not exist"
+            }), 404)
+        return make_response(jsonify({
+            "Red-flag": red_flag[0]
         }), 200)
