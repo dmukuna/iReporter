@@ -98,6 +98,7 @@ Thumbs.db
 !.gitignore
 !.editorconfig
 !.phpcs.xml.dist
+!.travis.yml
 
 
 *.h
