@@ -39,3 +39,13 @@ class RedFlags(Resource, RedFlagsModel):
                 "message": "Created red-flag record"
             }]
         }), 201)
+
+    def get(self):
+        """
+        method to get data
+        """
+        resp = self.database.get_red_flags()
+        return make_response(jsonify({
+            "status": 200,
+            "data": resp
+        }), 200)
