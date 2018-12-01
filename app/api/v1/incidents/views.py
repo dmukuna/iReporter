@@ -66,3 +66,24 @@ class RedFlag(RedFlags):
         return make_response(jsonify({
             "Red-flag": red_flag[0]
         }), 200)
+    def put(self, flag_id):
+        """Update a red-flag record"""
+        red_flag = [record for record in self.database if record['id'] == flag_id]
+        if red_flag == []:
+            return make_response(jsonify({
+                "status": 404,
+                "error": "The specified red-flag does not exist"
+            }), 404)
+        data = request.get_json()
+        red_flag[0]['created_by'] = data['created_by']
+        red_flag[0]['created_on'] = data['created_on']
+        red_flag[0]['incident_type'] = data['incident_type']
+        red_flag[0]['location'] = data['location']
+        red_flag[0]['status'] = data['status']
+        red_flag[0]['image'] = data['image']
+        red_flag[0]['video'] = data['video']
+        red_flag[0]['comment'] = data['comment']
+        return make_response(jsonify({
+            "Red-flag": red_flag[0],
+            "message": "Redflag updated successfully!"
+        }), 200)
