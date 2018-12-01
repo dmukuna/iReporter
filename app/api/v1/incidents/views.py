@@ -87,3 +87,22 @@ class RedFlag(RedFlags):
             "Red-flag": red_flag[0],
             "message": "Redflag updated successfully!"
         }), 200)
+    def delete(self, flag_id):
+        """Delete a specific red-flag"""
+        red_flag = [record for record in self.database if record['id'] == flag_id]
+        rec_id = red_flag[0]['id']
+        if red_flag == []:
+            return make_response(jsonify({
+                "status": 204,
+                "data":[{
+                    "message": "The specified red-flag does not exist"
+                }]
+            }), 204)
+        self.database.remove(red_flag[0])
+        return make_response(jsonify({
+            "status": 200,
+            "data":[{
+                "Id": rec_id,
+                "message": "Red-flag has been deleted"
+            }]
+        }), 200)
