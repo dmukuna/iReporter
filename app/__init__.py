@@ -11,7 +11,7 @@ def create_app(config_name):
     """
     create app function
     """
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(APP_CONFIG[config_name])
     app.config.from_pyfile('../instance/config.py')
     app.register_blueprint(v1)
