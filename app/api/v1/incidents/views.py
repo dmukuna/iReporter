@@ -106,3 +106,54 @@ class RedFlag(RedFlags):
                 "message": "Red-flag has been deleted"
             }]
         }), 200)
+
+class RedFlagAttr(RedFlag):
+    """class for patching a specific record attribute"""
+    def __init__(self):
+        super(RedFlagAttr, self).__init__()
+        self.database = RED_FLAGS_LIST
+
+    def patch(self, flag_id, attr):
+        """Method for patching a specific red-flag"""
+        red_flag = [record for record in self.database if record['id'] == flag_id]
+        rec_id = red_flag[0]['id']
+        change = request.get_json()['change']
+        allowed = ['video', 'comment', 'status', "incident_type", "location"]
+        allowed_media = ['image', 'video']
+
+        if red_flag != []:
+            if attr in allowed:
+                red_flag[0][str(attr)] = change
+                return make_response(jsonify({
+                    "status": 200,
+                    "data": [{
+                        "id": rec_id,
+                        "message":"updated red-flag record "+ str(attr)
+                    }]
+                }), 200)
+            elif attr in allowed_media and attr == 'image':
+                red_flag[0]['image'] = change
+                return make_response(jsonify({
+                    "status": 200,
+                    "data":[{
+                        "id": rec_id,
+                        "message":"updated red-flag's record image"
+                    }]
+                }), 200)
+            elif attr in allowed_media and attr == 'video':
+                red_flag[0]['video'] = change
+                return make_response(jsonify({
+                    "status": 200,
+                    "data":[{
+                        "id": rec_id,
+                        "message":"updated red-flag's record video"
+                    }]
+                }), 200)
+            return make_response(jsonify({
+                "status": 403,
+                "error": "The specified attribute cannot be edited"
+            }), 403)
+        return make_response(jsonify({
+            "status": 404,
+            "error": "The specified red-flag does not exist"
+        }), 404)
