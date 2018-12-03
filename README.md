@@ -21,7 +21,7 @@ iReporter is a flask RESTful API that enables users to:
 4) Install the requirements : `pip install -r requirements.txt`
 
 ## Running tests
-- Run this command on the terminal:  ` pytest`
+- Run this command on the terminal:  `pytest`
 
 ### Prerequisites
 

@@ -35,6 +35,7 @@ class RedFlagTestCase(unittest.TestCase):
         self.location = {
             "change": "40.689263, -74.044505"
         }
+
     def test_redflag_creation(self):
         """method to test for red-flag creation"""
         response = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag),
