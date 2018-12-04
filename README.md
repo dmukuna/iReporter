@@ -21,11 +21,17 @@ iReporter is a flask RESTful API that enables users to:
 4) Install the requirements : `pip install -r requirements.txt`
 
 ## Running tests
-- Run this command on the terminal:  `pytest`
+- Run this command on the terminal:  `pytest --cov-report term-missing --cov=app`
+###Break down into end to end tests
+
+####Deployment:
+The application has been hosted on heroku. Below, is the link to the application
+ 
+[iReporter](https://ireporter254.herokuapp.com/)
 
 ### Prerequisites
 
--  Python 3.6.5
+-  Python 3.6.7
 -  virtual environment
 
 ## Running it on machine

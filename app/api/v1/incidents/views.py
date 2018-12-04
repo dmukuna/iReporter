@@ -57,7 +57,6 @@ class RedFlag(RedFlags):
     """class for PUT, delete and GETTING A SPECIFIC RECORD"""
     def __init__(self):
         super().__init__()
-        self.object = RedFlagsModel()
 
     #pylint: disable=arguments-differ
     def get(self, flag_id):
@@ -70,6 +69,7 @@ class RedFlag(RedFlags):
         return make_response(jsonify({
             "Red-flag": red_flag[0]
         }), 200)
+
     def put(self, flag_id):
         """Update a red-flag record"""
         red_flag = [record for record in self.object.database if record['id'] == flag_id]
@@ -91,6 +91,7 @@ class RedFlag(RedFlags):
             "Red-flag": red_flag[0],
             "message": "Redflag updated successfully!"
         }), 200)
+
     def delete(self, flag_id):
         """Delete a specific red-flag"""
         red_flag = [record for record in self.object.database if record['id'] == flag_id]
@@ -115,7 +116,7 @@ class RedFlag(RedFlags):
 class RedFlagAttr(RedFlag):
     """class for patching a specific record attribute"""
     def __init__(self):
-        super(RedFlagAttr, self).__init__()
+        super().__init__()
 
     def patch(self, flag_id, attr):
         """Method for patching a specific red-flag"""

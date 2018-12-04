@@ -38,7 +38,8 @@ class RedFlagTestCase(unittest.TestCase):
 
     def test_redflag_creation(self):
         """method to test for red-flag creation"""
-        response = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag),
+        response = self.client().post('/api/v1/red-flags',
+                                      data=json.dumps(self.redflag),
                                       content_type='application/json')
         result = json.loads(response.data)
         self.assertEqual(response.status_code, 201)
@@ -46,7 +47,8 @@ class RedFlagTestCase(unittest.TestCase):
 
     def test_get_redflag_with_id(self):
         """method to test for getting a specific red-flag"""
-        response_post = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag),
+        response_post = self.client().post('/api/v1/red-flags',
+                                           data=json.dumps(self.redflag),
                                            content_type='application/json')
         #result_post = json.loads(response_post.data)
         self.assertEqual(response_post.status_code, 201)
@@ -55,10 +57,12 @@ class RedFlagTestCase(unittest.TestCase):
 
     def test_get_all_redflags(self):
         """method to test for getting a specific red-flag"""
-        response_post = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag),
+        response_post = self.client().post('/api/v1/red-flags',
+                                           data=json.dumps(self.redflag),
                                            content_type='application/json')
         self.assertEqual(response_post.status_code, 201)
-        response_post = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag2),
+        response_post = self.client().post('/api/v1/red-flags',
+                                           data=json.dumps(self.redflag2),
                                            content_type='application/json')
         self.assertEqual(response_post.status_code, 201)
         response_get = self.client().get('/api/v1/red-flags')
@@ -66,7 +70,8 @@ class RedFlagTestCase(unittest.TestCase):
 
     def test_comment_edit(self):
         """method to test for editing a specific comment of a red-flag"""
-        response_post = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag),
+        response_post = self.client().post('/api/v1/red-flags',
+                                           data=json.dumps(self.redflag),
                                            content_type='application/json')
         self.assertEqual(response_post.status_code, 201)
         response_patch = self.client().patch('/api/v1/red-flags/1/comment',
@@ -78,7 +83,8 @@ class RedFlagTestCase(unittest.TestCase):
 
     def test_location_edit(self):
         """method to test for editing a specific location of a red-flag"""
-        response_post = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag),
+        response_post = self.client().post('/api/v1/red-flags',
+                                           data=json.dumps(self.redflag),
                                            content_type='application/json')
         self.assertEqual(response_post.status_code, 201)
         response_patch = self.client().patch('/api/v1/red-flags/1/location',
@@ -90,7 +96,8 @@ class RedFlagTestCase(unittest.TestCase):
 
     def test_404_not_found(self):
         """method to test for non-existing red-flag"""
-        response_post = self.client().post('/api/v1/red-flags', data=json.dumps(self.redflag),
+        response_post = self.client().post('/api/v1/red-flags',
+                                           data=json.dumps(self.redflag),
                                            content_type='application/json')
         self.assertEqual(response_post.status_code, 201)
         response_get = self.client().get('/api/v1/red-flags/4')
@@ -100,7 +107,8 @@ class RedFlagTestCase(unittest.TestCase):
 
     def tearDown(self):
         from app.api.v1.incidents.models import RedFlagsModel
-        RedFlagsModel.red_flag_list = []
+        self.object = RedFlagsModel()
+        self.object = []
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
