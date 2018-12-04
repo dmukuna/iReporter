@@ -1,37 +1,40 @@
 """
 app v1 views
 """
+import json
 from flask import jsonify, make_response, request
 #pylint: disable=import-error
 from flask_restful import Resource
+from datetime import date
 
-from .models import RedFlagsModel, RED_FLAGS_LIST
+from .models import RedFlagsModel
 
 
-class RedFlags(Resource, RedFlagsModel):
+class RedFlags(Resource):
     """
     Red-flags class
     """
     def __init__(self):
-        super(RedFlags, self).__init__()
-        self.database = RedFlagsModel()
+        self.object = RedFlagsModel()
 
     def post(self):
         """
         Method to post data
         """
-        rec_id = len(self.database.get_red_flags()) + 1
-        data = request.get_json()
-        created_by = data['created_by']
-        created_on = data['created_on']
-        incident_type = data['incident_type']
-        location = data['location']
-        status = data['status']
-        image = data['image']
-        video = data['video']
-        comment = data['comment']
-        self.database.save(created_by, created_on, incident_type, location, status, image, video,
-                           comment)
+        req = request.get_json()
+        data = {
+            "id": len(self.object.database) + 1,
+            "created_by": req['created_by'],
+            "created_on": date.today(),
+            "incident_type": req['incident_type'],
+            "location": req['location'],
+            "status": req['status'],
+            "image": req['image'],
+            "video": req['video'],
+            "comment": req['comment']
+        }
+        rec_id = len(self.object.get_red_flags()) + 1
+        self.object.save(data)
         return make_response(jsonify({
             "status": 201,
             "data": [{
@@ -39,25 +42,26 @@ class RedFlags(Resource, RedFlagsModel):
                 "message": "Created red-flag record"
             }]
         }), 201)
+
     def get(self):
-        """
-        method to get data
-        """
-        resp = self.database.get_red_flags()
+        r_flag = self.object.get_red_flags()
         return make_response(jsonify({
             "status": 200,
-            "data": resp
+            "data": [{
+                "Red-flags": r_flag
+            }]
         }), 200)
+
 
 class RedFlag(RedFlags):
     """class for PUT, delete and GETTING A SPECIFIC RECORD"""
     def __init__(self):
-        super(RedFlag, self).__init__()
-        self.database = RED_FLAGS_LIST
+        super().__init__()
+        self.object = RedFlagsModel()
 
     #pylint: disable=arguments-differ
     def get(self, flag_id):
-        red_flag = [record for record in self.database if record['id'] == flag_id]
+        red_flag = [record for record in self.object.database if record['id'] == flag_id]
         if red_flag == []:
             return make_response(jsonify({
                 "status": 404,
@@ -68,28 +72,28 @@ class RedFlag(RedFlags):
         }), 200)
     def put(self, flag_id):
         """Update a red-flag record"""
-        red_flag = [record for record in self.database if record['id'] == flag_id]
+        red_flag = [record for record in self.object.database if record['id'] == flag_id]
         if red_flag == []:
             return make_response(jsonify({
                 "status": 404,
                 "error": "The specified red-flag does not exist"
             }), 404)
-        data = request.get_json()
-        red_flag[0]['created_by'] = data['created_by']
-        red_flag[0]['created_on'] = data['created_on']
-        red_flag[0]['incident_type'] = data['incident_type']
-        red_flag[0]['location'] = data['location']
-        red_flag[0]['status'] = data['status']
-        red_flag[0]['image'] = data['image']
-        red_flag[0]['video'] = data['video']
-        red_flag[0]['comment'] = data['comment']
+        req = request.get_json()
+        red_flag[0]['created_by'] = req['created_by']
+        red_flag[0]['created_on'] = req['created_on']
+        red_flag[0]['incident_type'] = req['incident_type']
+        red_flag[0]['location'] = req['location']
+        red_flag[0]['status'] = req['status']
+        red_flag[0]['image'] = req['image']
+        red_flag[0]['video'] = req['video']
+        red_flag[0]['comment'] = req['comment']
         return make_response(jsonify({
             "Red-flag": red_flag[0],
             "message": "Redflag updated successfully!"
         }), 200)
     def delete(self, flag_id):
         """Delete a specific red-flag"""
-        red_flag = [record for record in self.database if record['id'] == flag_id]
+        red_flag = [record for record in self.object.database if record['id'] == flag_id]
         rec_id = red_flag[0]['id']
         if red_flag == []:
             return make_response(jsonify({
@@ -98,7 +102,7 @@ class RedFlag(RedFlags):
                     "message": "The specified red-flag does not exist"
                 }]
             }), 204)
-        self.database.remove(red_flag[0])
+        self.object.database.remove(red_flag[0])
         return make_response(jsonify({
             "status": 200,
             "data":[{
@@ -107,15 +111,15 @@ class RedFlag(RedFlags):
             }]
         }), 200)
 
+
 class RedFlagAttr(RedFlag):
     """class for patching a specific record attribute"""
     def __init__(self):
         super(RedFlagAttr, self).__init__()
-        self.database = RED_FLAGS_LIST
 
     def patch(self, flag_id, attr):
         """Method for patching a specific red-flag"""
-        red_flag = [record for record in self.database if record['id'] == flag_id]
+        red_flag = [record for record in self.object.database if record['id'] == flag_id]
         rec_id = red_flag[0]['id']
         change = request.get_json()['change']
         allowed = ['video', 'comment', 'status', "incident_type", "location"]
