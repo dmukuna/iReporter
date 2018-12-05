@@ -25,7 +25,7 @@ iReporter is a flask RESTful API that enables users to:
 ###Break down into end to end tests
 
 
-####Deployment:
+#### Deployment:
 The application has been hosted on heroku. Below, is the link to the application
  
 [iReporter](https://ireporter254.herokuapp.com/)
