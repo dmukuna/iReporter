@@ -10,11 +10,6 @@ from datetime import date
 from .models import RedFlagsModel
 
 
-def non_empty_string(s):
-    if not s:
-        return ValueError("The field should not be empty")
-    return s
-
 class RedFlags(Resource):
     """
     Red-flags class

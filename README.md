@@ -47,7 +47,7 @@ The application has been hosted on heroku. Below, is the link to the application
 Tests the below payload with indicted endpoints
 ```
          {
-            'created_by': 'Daniel',
+            'created_by': '1,
             'created_on': '1/2/2018',
             'comment': 'description is ...',
             'incident_type': 'red-flag',
