@@ -212,7 +212,7 @@ class RedFlag(RedFlags):
         """Delete a specific red-flag"""
         red_flag = [record for record in self.object.database if record['id'] == flag_id]
         rec_id = red_flag[0]['id']
-        if red_flag == []:
+        if len(red_flag) == 0:
             return make_response(jsonify({
                 "status": 204,
                 "data":[{
