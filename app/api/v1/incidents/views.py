@@ -45,13 +45,13 @@ class RedFlags(Resource):
             if len(arg['incident_type']) == 0:
                 return make_response(jsonify({
                     "data": [{
-                        "message": "Incident type field is required fields are entered"
+                        "message": "Incident type field is required"
                     }]
                 }))
             elif len(arg['location']) == 0:
                 return make_response(jsonify({
                     "data": [{
-                        "message": "Location field is required fields are entered"
+                        "message": "Location field is required"
                     }]
                 }))
             elif len(arg['status']) == 0:
@@ -118,7 +118,7 @@ class RedFlag(RedFlags):
     #pylint: disable=arguments-differ
     def get(self, flag_id):
         red_flag = [record for record in self.object.database if record['id'] == flag_id]
-        if red_flag == []:
+        if len(red_flag) == 0:
             return make_response(jsonify({
                 "status": 404,
                 "error": "The specified red-flag does not exist"
@@ -130,24 +130,83 @@ class RedFlag(RedFlags):
     def put(self, flag_id):
         """Update a red-flag record"""
         red_flag = [record for record in self.object.database if record['id'] == flag_id]
-        if red_flag == []:
+        if len(red_flag) == 0:
             return make_response(jsonify({
                 "status": 404,
                 "error": "The specified red-flag does not exist"
             }), 404)
-        req = request.get_json()
-        red_flag[0]['created_by'] = req['created_by']
-        red_flag[0]['created_on'] = req['created_on']
-        red_flag[0]['incident_type'] = req['incident_type']
-        red_flag[0]['location'] = req['location']
-        red_flag[0]['status'] = req['status']
-        red_flag[0]['image'] = req['image']
-        red_flag[0]['video'] = req['video']
-        red_flag[0]['comment'] = req['comment']
-        return make_response(jsonify({
-            "Red-flag": red_flag[0],
-            "message": "Redflag updated successfully!"
-        }), 200)
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('created_by', type=int, nullable=False, required=True, location='json')
+        parser.add_argument('incident_type', type=str, nullable=False, required=True,
+                            location='json',
+                            help="incident_type cannot be blank")
+        parser.add_argument('location', type=str, nullable=False, required=True, location='json',
+                            help="location cannot be blank")
+        parser.add_argument('status', type=str, nullable=False, required=True, location='json',
+                            help="status cannot be blank")
+        parser.add_argument('image', type=str, nullable=False, required=True, location='json',
+                            help="image cannot be blank")
+        parser.add_argument('video', type=str, nullable=False, required=True, location='json',
+                            help="video cannot be blank")
+        parser.add_argument('comment', type=str, nullable=False, required=True, location='json',
+                            help="comment cannot be blank")
+
+        args = parser.parse_args()
+        args_list = []
+        args_list.append(args)
+
+        for arg in args_list:
+            if len(arg['incident_type']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Incident type field is required"
+                    }]
+                }))
+            elif len(arg['location']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Location field is required"
+                    }]
+                }))
+            elif len(arg['status']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Incident status field is required"
+                    }]
+                }))
+            elif len(arg['image']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Image field is required"
+                    }]
+                }))
+            elif len(arg['video']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "video field is required"
+                    }]
+                }))
+            elif len(arg['comment']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "comment field is required"
+                    }]
+                }))
+            else:
+                red_flag[0]['created_by'] = args['created_by']
+                red_flag[0]['created_on'] = date.today()
+                red_flag[0]['incident_type'] = args['incident_type']
+                red_flag[0]['location'] = args['location']
+                red_flag[0]['status'] = args['status']
+                red_flag[0]['image'] = args['image']
+                red_flag[0]['video'] = args['video']
+                red_flag[0]['comment'] = args['comment']
+                return make_response(jsonify({
+                    "Red-flag": red_flag[0],
+                    "message": "Redflag updated successfully!"
+                }), 200)
+
 
     def delete(self, flag_id):
         """Delete a specific red-flag"""
@@ -179,43 +238,53 @@ class RedFlagAttr(RedFlag):
         """Method for patching a specific red-flag"""
         red_flag = [record for record in self.object.database if record['id'] == flag_id]
         rec_id = red_flag[0]['id']
-        change = request.get_json()['change']
-        allowed = ['video', 'comment', 'status', "incident_type", "location"]
-        allowed_media = ['image', 'video']
 
-        if red_flag != []:
-            if attr in allowed:
-                red_flag[0][str(attr)] = change
+        parser = reqparse.RequestParser()
+        parser.add_argument('change', type=str, nullable=False, required=True, location='json',
+                            help="Input the required text")
+        args = parser.parse_args()
+        if len(args['change']) != 0:
+            change = request.get_json()['change']
+            allowed = ['video', 'comment', 'status', "incident_type", "location"]
+            allowed_media = ['image', 'video']
+
+            if len(red_flag) != 0:
+                if attr in allowed:
+                    red_flag[0][str(attr)] = change
+                    return make_response(jsonify({
+                        "status": 200,
+                        "data": [{
+                            "id": rec_id,
+                            "message": "updated red-flag record " + str(attr)
+                        }]
+                    }), 200)
+                elif attr in allowed_media and attr == 'image':
+                    red_flag[0]['image'] = change
+                    return make_response(jsonify({
+                        "status": 200,
+                        "data": [{
+                            "id": rec_id,
+                            "message": "updated red-flag's record image"
+                        }]
+                    }), 200)
+                elif attr in allowed_media and attr == 'video':
+                    red_flag[0]['video'] = change
+                    return make_response(jsonify({
+                        "status": 200,
+                        "data": [{
+                            "id": rec_id,
+                            "message": "updated red-flag's record video"
+                        }]
+                    }), 200)
                 return make_response(jsonify({
-                    "status": 200,
-                    "data": [{
-                        "id": rec_id,
-                        "message":"updated red-flag record "+ str(attr)
-                    }]
-                }), 200)
-            elif attr in allowed_media and attr == 'image':
-                red_flag[0]['image'] = change
-                return make_response(jsonify({
-                    "status": 200,
-                    "data":[{
-                        "id": rec_id,
-                        "message":"updated red-flag's record image"
-                    }]
-                }), 200)
-            elif attr in allowed_media and attr == 'video':
-                red_flag[0]['video'] = change
-                return make_response(jsonify({
-                    "status": 200,
-                    "data":[{
-                        "id": rec_id,
-                        "message":"updated red-flag's record video"
-                    }]
-                }), 200)
+                    "status": 403,
+                    "error": "The specified attribute cannot be edited"
+                }), 403)
             return make_response(jsonify({
-                "status": 403,
-                "error": "The specified attribute cannot be edited"
-            }), 403)
-        return make_response(jsonify({
-            "status": 404,
-            "error": "The specified red-flag does not exist"
-        }), 404)
+                "status": 404,
+                "error": "The specified red-flag does not exist"
+            }), 404)
+        else:
+            return make_response(jsonify({
+                "error": "You cannot input an empty string"
+            }))
