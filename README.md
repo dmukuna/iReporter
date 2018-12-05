@@ -43,6 +43,19 @@ The application has been hosted on heroku. Below, is the link to the application
 - The api endpoints can be consumed using postman.
 
 ## Endpoints
+Tests the below payload with indicted endpoints
+```
+{
+            'created_by': 'Daniel',
+            'created_on': '1/2/2018',
+            'comment': 'description is ...',
+            'incident_type': 'red-flag',
+            'image': 'image',
+            'video': 'video',
+            'location': '1.34532, 36.1552',
+            'status': 'resolved',
+            }```
+
 | Endpoint                                   | FUNCTIONALITY                         |
 | ----------------------------------------   |:-------------------------------------:|
 | POST /api/v1/red-flags                     | This will create a red-flag           |
