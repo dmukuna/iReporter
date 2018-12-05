@@ -4,11 +4,16 @@ app v1 views
 import json
 from flask import jsonify, make_response, request
 #pylint: disable=import-error
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from datetime import date
 
 from .models import RedFlagsModel
 
+
+def non_empty_string(s):
+    if not s:
+        return ValueError("The field should not be empty")
+    return s
 
 class RedFlags(Resource):
     """
@@ -21,27 +26,84 @@ class RedFlags(Resource):
         """
         Method to post data
         """
-        req = request.get_json()
-        data = {
-            "id": len(self.object.database) + 1,
-            "created_by": req['created_by'],
-            "created_on": date.today(),
-            "incident_type": req['incident_type'],
-            "location": req['location'],
-            "status": req['status'],
-            "image": req['image'],
-            "video": req['video'],
-            "comment": req['comment']
-        }
-        rec_id = len(self.object.get_red_flags()) + 1
-        self.object.save(data)
-        return make_response(jsonify({
-            "status": 201,
-            "data": [{
-                "id": rec_id,
-                "message": "Created red-flag record"
-            }]
-        }), 201)
+        parser = reqparse.RequestParser()
+
+        parser.add_argument('created_by', type=int, nullable=False, required=True, location='json')
+        parser.add_argument('incident_type', type=str,nullable=False, required=True,location='json',
+                            help="incident_type cannot be blank")
+        parser.add_argument('location', type=str, nullable=False, required=True, location='json',
+                            help="location cannot be blank")
+        parser.add_argument('status', type=str, nullable=False, required=True, location='json',
+                            help="status cannot be blank")
+        parser.add_argument('image', type=str, nullable=False, required=True, location='json',
+                            help="image cannot be blank")
+        parser.add_argument('video', type=str, nullable=False, required=True, location='json',
+                            help="video cannot be blank")
+        parser.add_argument('comment', type=str, nullable=False, required=True, location='json',
+                            help="comment cannot be blank")
+
+        args = parser.parse_args()
+        args_list = []
+        args_list.append(args)
+
+        for arg in args_list:
+            if len(arg['incident_type']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Incident type field is required fields are entered"
+                    }]
+                }))
+            elif len(arg['location']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Location field is required fields are entered"
+                    }]
+                }))
+            elif len(arg['status']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Incident status field is required"
+                    }]
+                }))
+            elif len(arg['image']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Image field is required"
+                    }]
+                }))
+            elif len(arg['video']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "video field is required"
+                    }]
+                }))
+            elif len(arg['comment']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "comment field is required"
+                    }]
+                }))
+            else:
+                data = {
+                    "id": len(self.object.database) + 1,
+                    "created_by": args['created_by'],
+                    "created_on": date.today(),
+                    "incident_type": args['incident_type'],
+                    "location": args['location'],
+                    "status": args['status'],
+                    "image": args['image'],
+                    "video": args['video'],
+                    "comment": args['comment']
+                }
+                rec_id = len(self.object.get_red_flags()) + 1
+                self.object.save(data)
+                return make_response(jsonify({
+                    "status": 201,
+                    "data": [{
+                        "id": rec_id,
+                        "message": "Created red-flag record"
+                    }]
+                }), 201)
 
     def get(self):
         r_flag = self.object.get_red_flags()
