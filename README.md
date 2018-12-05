@@ -24,6 +24,7 @@ iReporter is a flask RESTful API that enables users to:
 - Run this command on the terminal:  `pytest --cov-report term-missing --cov=app`
 ###Break down into end to end tests
 
+
 ####Deployment:
 The application has been hosted on heroku. Below, is the link to the application
  
