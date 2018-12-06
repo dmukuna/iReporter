@@ -74,7 +74,6 @@ class Users(Resource):
                 }))
             else:
                 data = {
-                    "id": len(self.object.database) + 1,
                     "fname": arg['fname'],
                     "lname": arg['lname'],
                     "oname": arg['oname'],
@@ -161,6 +160,7 @@ class UserAttr(User):
         if len(args[attr]) != 0:
             change = args[attr]
             allowed = ['fname', 'lname', 'onames', 'email', 'tel_no', 'user_name', 'is_admin']
+
 
             if len(user) != 0:
                 if attr in allowed:
