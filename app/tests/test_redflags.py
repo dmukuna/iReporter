@@ -10,7 +10,7 @@ class RedFlagTestCase(unittest.TestCase):
         self.app = create_app(config_name="testing")
         self.client = self.app.test_client
         self.redflag = {
-            'created_by': 'Daniel',
+            'created_by': 1,
             'created_on': '1/2/2018',
             'comment': 'description is ...',
             'incident_type': 'red-flag',
@@ -20,7 +20,7 @@ class RedFlagTestCase(unittest.TestCase):
             'status': 'resolved',
             }
         self.redflag2 = {
-            "created_by": "Stella",
+            "created_by": 2,
             "created_on": "3/2/1994",
             "comment": "corruption has become rampant",
             "incident_type": "red-flag",

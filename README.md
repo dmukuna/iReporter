@@ -24,7 +24,8 @@ iReporter is a flask RESTful API that enables users to:
 - Run this command on the terminal:  `pytest --cov-report term-missing --cov=app`
 ###Break down into end to end tests
 
-####Deployment:
+
+#### Deployment:
 The application has been hosted on heroku. Below, is the link to the application
  
 [iReporter](https://ireporter254.herokuapp.com/)
@@ -43,6 +44,20 @@ The application has been hosted on heroku. Below, is the link to the application
 - The api endpoints can be consumed using postman.
 
 ## Endpoints
+Tests the below payload with indicted endpoints
+```
+         {
+            'created_by': '1,
+            'created_on': '1/2/2018',
+            'comment': 'description is ...',
+            'incident_type': 'red-flag',
+            'image': 'image',
+            'video': 'video',
+            'location': '1.34532, 36.1552',
+            'status': 'resolved',
+         }
+```
+
 | Endpoint                                   | FUNCTIONALITY                         |
 | ----------------------------------------   |:-------------------------------------:|
 | POST /api/v1/red-flags                     | This will create a red-flag           |
