@@ -119,28 +119,28 @@ class User(Users):
             "User": user[0]
         }), 200)
 
-#     def delete(self, user_id):
-#         """Delete a specific User"""
-#         try:
-#             user = [record for record in self.object.database if record['id'] == user_id]
-#             u_id = user[0]['id']
-#
-#             self.object.database.remove(user[0])
-#
-#         except IndexError:
-#             return make_response(jsonify({
-#                 "status": 404,
-#                 "data": [{
-#                     "message": "The specified user does not exist"
-#                 }]
-#             }), 404)
-#         return make_response(jsonify({
-#             "status": 200,
-#             "data": [{
-#                 "Id": u_id,
-#                 "message": "User has been deleted"
-#             }]
-#         }), 200)
+    def delete(self, user_id):
+        """Delete a specific User"""
+        try:
+            user = [record for record in self.object.database if record['id'] == user_id]
+            u_id = user[0]['id']
+
+            self.object.database.remove(user[0])
+
+        except IndexError:
+            return make_response(jsonify({
+                "status": 404,
+                "data": [{
+                    "message": "The specified user does not exist"
+                }]
+            }), 404)
+        return make_response(jsonify({
+            "status": 200,
+            "data": [{
+                "Id": u_id,
+                "message": "User has been deleted"
+            }]
+        }), 200)
 #
 #
 # class UserAttr(User):
