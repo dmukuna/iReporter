@@ -101,11 +101,11 @@ class Incidents(Resource):
                 }), 201)
 
     def get(self):
-        r_flag = self.object.get_incidents()
+        incidents = self.object.get_incidents()
         return make_response(jsonify({
             "status": 200,
             "data": [{
-                "Red-flags": r_flag
+                "Red-flags": incidents
             }]
         }), 200)
 
@@ -117,18 +117,18 @@ class Incident(Incidents):
 
     #pylint: disable=arguments-differ
     def get(self, flag_id):
-        red_flag = [record for record in self.object.database if record['id'] == flag_id]
-        if len(red_flag) == 0:
+        incident = [record for record in self.object.database if record['id'] == flag_id]
+        if len(incident) == 0:
             return make_response(jsonify({
                 "status": 404,
                 "error": "The specified red-flag does not exist"
             }), 404)
         return make_response(jsonify({
-            "Red-flag": red_flag[0]
+            "Red-flag": incident[0]
         }), 200)
 
     def put(self, flag_id):
-        """Update a red-flag record"""
+        """Update a incident record"""
         incident = [record for record in self.object.database if record['id'] == flag_id]
         if len(incident) == 0:
             return make_response(jsonify({
@@ -212,7 +212,7 @@ class Incident(Incidents):
         """Delete a specific red-flag"""
         try:
             incident = [record for record in self.object.database if record['id'] == flag_id]
-            rec_id = incident[0]['id']
+            inc_id = incident[0]['id']
 
             self.object.database.remove(incident[0])
 
@@ -226,7 +226,7 @@ class Incident(Incidents):
         return make_response(jsonify({
             "status": 200,
             "data": [{
-                "Id": rec_id,
+                "Id": inc_id,
                 "message": "Red-flag has been deleted"
             }]
         }), 200)

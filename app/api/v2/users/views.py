@@ -94,7 +94,13 @@ class Users(Resource):
                 }), 201)
 
     def get(self):
-        pass
+        users = self.object.get_users()
+        return make_response(jsonify({
+            "status": 200,
+            "data": [{
+                "Red-flags": users
+            }]
+        }), 200)
 
 
 class User(Users):
