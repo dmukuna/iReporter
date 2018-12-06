@@ -110,6 +110,7 @@ class User(Users):
     def get(self, user_id):
         user = [record for record in self.object.database if record['id'] == user_id]
         if len(user) == 0:
+
             return make_response(jsonify({
                 "status": 404,
                 "error": "The specified user does not exist"
