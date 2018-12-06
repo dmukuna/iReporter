@@ -112,19 +112,73 @@ class User(Users):
         if len(user) == 0:
             return make_response(jsonify({
                 "status": 404,
-                "error": "The specified red-flag does not exist"
+                "error": "The specified user does not exist"
             }), 404)
         return make_response(jsonify({
-            "Red-flag": user[0]
+            "User": user[0]
         }), 200)
 
-    def delete(self, user_id):
-        pass
+#     def delete(self, user_id):
+#         """Delete a specific User"""
+#         try:
+#             user = [record for record in self.object.database if record['id'] == user_id]
+#             u_id = user[0]['id']
+#
+#             self.object.database.remove(user[0])
+#
+#         except IndexError:
+#             return make_response(jsonify({
+#                 "status": 404,
+#                 "data": [{
+#                     "message": "The specified user does not exist"
+#                 }]
+#             }), 404)
+#         return make_response(jsonify({
+#             "status": 200,
+#             "data": [{
+#                 "Id": u_id,
+#                 "message": "User has been deleted"
+#             }]
+#         }), 200)
+#
+#
+# class UserAttr(User):
+#     def __init__(self):
+#         super().__init__()
 
-
-class UserAttr(User):
-    def __init__(self):
-        super().__init__()
-
-    def patch(self, user_id, attr):
-        pass
+    # def patch(self, user_id, attr):
+    #     """Method for patching a specific red-flag"""
+    #     user = [record for record in self.object.database if record['id'] == user_id]
+    #     u_id = user[0]['id']
+    #
+    #     attr = str(attr)
+    #     parser = reqparse.RequestParser()
+    #     parser.add_argument(attr, type=str, nullable=False, required=True, location='json',
+    #                         help="Input the required text")
+    #     args = parser.parse_args()
+    #
+    #     if len(args[attr]) != 0:
+    #         change = args[attr]
+    #         allowed = ['fname', 'lname', 'onames', 'email', 'tel_no', 'user_name', 'is_admin']
+    #
+    #         if len(user) != 0:
+    #             if attr in allowed:
+    #                 user[0][str(attr)] = change
+    #                 return make_response(jsonify({
+    #                     "status": 200,
+    #                     "data": [{
+    #                         "id": u_id,
+    #                         "message": "updated red-flag record " + str(attr)
+    #                     }]
+    #                 }), 200)
+    #             return make_response(jsonify({
+    #                 "status": 403,
+    #                 "error": "The specified attribute cannot be edited"
+    #             }), 403)
+    #         return make_response(jsonify({
+    #             "status": 404,
+    #             "error": "The specified user does not exist"
+    #         }), 404)
+    #     return make_response(jsonify({
+    #         "error": "You need to input some text"
+    #     }))

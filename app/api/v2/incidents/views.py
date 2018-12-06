@@ -209,7 +209,7 @@ class Incident(Incidents):
 
 
     def delete(self, flag_id):
-        """Delete a specific red-flag"""
+        """Delete a specific Incident"""
         try:
             incident = [record for record in self.object.database if record['id'] == flag_id]
             inc_id = incident[0]['id']
@@ -242,12 +242,13 @@ class IncidentAttr(Incident):
         incident = [record for record in self.object.database if record['id'] == flag_id]
         rec_id = incident[0]['id']
 
+        attr = str(attr)
         parser = reqparse.RequestParser()
-        parser.add_argument('change', type=str, nullable=False, required=True, location='json',
+        parser.add_argument(attr, type=str, nullable=False, required=True, location='json',
                             help="Input the required text")
         args = parser.parse_args()
-        if len(args['change']) != 0:
-            change = request.get_json()['change']
+        if len(args[attr]) != 0:
+            change = args[attr]
             allowed = ['video', 'comment', 'status', "incident_type", "location"]
             allowed_media = ['image', 'video']
 
