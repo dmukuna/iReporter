@@ -31,7 +31,7 @@ class IncidentsModel():
         """
         query = """SELECT * FROM incidents;"""
         curr = self.database.cursor()
-        curr = curr.execute(query)
+        curr.execute(query)
         data = curr.fetchall()
         resp = []
 
