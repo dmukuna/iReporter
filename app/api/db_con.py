@@ -37,7 +37,7 @@ def tables():
     onames VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     tel_no VARCHAR(20) NOT NULL,
-    user_nm VARCHAR(255) NOT NULL,
+    user_name VARCHAR(255) NOT NULL,
     date_created DATE NOT NULL DEFAULT CURRENT_TIMESTAMP NOT NULL,
     is_admin INTEGER NOT NULL
     );"""

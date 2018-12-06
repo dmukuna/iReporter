@@ -5,7 +5,8 @@ from ...db_con import init_db
 
 RED_FLAGS_LIST = []
 
-class RedFlagsModel():
+
+class IncidentsModel():
     """
     red-flags class
     """
@@ -17,8 +18,6 @@ class RedFlagsModel():
         """
         save method
         """
-        data['id']
-        data['created_by']
         query = """INSERT INTO incidents (incident_type, location, status, image, video, comment) 
         VALUES (%(incident_type)s, %(location)s, %(status)s, %(image)s, %(video)s, %(comment)s);
         """
@@ -28,7 +27,7 @@ class RedFlagsModel():
 
         return data
 
-    def get_red_flags(self):
+    def get_incidents(self):
         """
         get_red_flags method
         """
