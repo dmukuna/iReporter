@@ -108,7 +108,15 @@ class User(Users):
         super().__init__()
 
     def get(self, user_id):
-        pass
+        user = [record for record in self.object.database if record['id'] == user_id]
+        if len(user) == 0:
+            return make_response(jsonify({
+                "status": 404,
+                "error": "The specified red-flag does not exist"
+            }), 404)
+        return make_response(jsonify({
+            "Red-flag": user[0]
+        }), 200)
 
     def delete(self, user_id):
         pass

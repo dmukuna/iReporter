@@ -3,8 +3,6 @@ red-flags model
 """
 from ...db_con import init_db
 
-RED_FLAGS_LIST = []
-
 
 class IncidentsModel():
     """
