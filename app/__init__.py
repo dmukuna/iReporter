@@ -5,7 +5,7 @@ from flask import Flask, Blueprint
 #local imports
 from instance.config import APP_CONFIG
 from app.api.db_con import create_tables
-from app.api.v1.incidents import VERSION_ONE as v
+from app.api.v1.incidents import VERSION_ONE as v1
 
 def create_app(config_name):
     """
