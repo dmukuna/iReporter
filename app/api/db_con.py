@@ -2,7 +2,9 @@ import os
 import psycopg2
 
 
+
 url = "dbname='ireporter' host='localhost' port=5432 user='postgres' password='postgres'"
+
 db_url = os.getenv('DATABSE_URL')
 
 
@@ -20,6 +22,7 @@ def create_tables():
     conn = connection(url)
     curr = conn.cursor()
     queries = tables()
+
 
     for query in queries:
         curr.execute(query)

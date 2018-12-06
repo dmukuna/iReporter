@@ -2,6 +2,7 @@
 from flask import Blueprint
 #pylint: disable=import-error
 from flask_restful import Api, Resource
+
 from .views import Incidents, Incident, IncidentAttr
 
 
@@ -11,3 +12,4 @@ API = Api(VERSION_TWO)
 API.add_resource(Incidents, '/incidents')
 API.add_resource(Incident, '/incidents/<int:flag_id>')
 API.add_resource(IncidentAttr, '/Incidents/<int:flag_id>/<string:attr>')
+
