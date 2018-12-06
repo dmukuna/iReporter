@@ -18,7 +18,7 @@ class Users(Resource):
                             help="Enter your other names")
         parser.add_argument('email', type=str, nullable=False, required=True, location='json',
                             help="Email field cannot be blank")
-        parser.add_argument('tel', type=str, nullable=False, required=True, location='json',
+        parser.add_argument('tel_no', type=str, nullable=False, required=True, location='json',
                             help="Telephone field cannot be blank")
         parser.add_argument('user_name', type=str, nullable=False, required=True, location='json',
                             help="Enter your user name")
@@ -42,7 +42,7 @@ class Users(Resource):
                         "message": "Last name field is required"
                     }]
                 }))
-            elif len(arg['oname']) == 0:
+            elif len(arg['onames']) == 0:
                 return make_response(jsonify({
                     "data": [{
                         "message": "Other name field field is required"
@@ -54,7 +54,7 @@ class Users(Resource):
                         "message": "Email field is required"
                     }]
                 }))
-            elif len(arg['tel']) == 0:
+            elif len(arg['tel_no']) == 0:
                 return make_response(jsonify({
                     "data": [{
                         "message": "Telephone field is required"
@@ -66,19 +66,13 @@ class Users(Resource):
                         "message": "Username field is required"
                     }]
                 }))
-            elif len(arg['is_admin']) == 0:
-                return make_response(jsonify({
-                    "data": [{
-                        "message": "Is_admin field is required"
-                    }]
-                }))
             else:
                 data = {
                     "fname": arg['fname'],
                     "lname": arg['lname'],
-                    "oname": arg['oname'],
+                    "onames": arg['onames'],
                     "email": arg['email'],
-                    "tel": arg['tel'],
+                    "tel_no": arg['tel_no'],
                     "user_name": arg['user_name'],
                     "is_admin": arg['is_admin']
                 }
@@ -88,7 +82,7 @@ class Users(Resource):
                     "status": 201,
                     "data": [{
                         "id": rec_id,
-                        "message": "Created incident record"
+                        "message": "Created user record"
                     }]
                 }), 201)
 
