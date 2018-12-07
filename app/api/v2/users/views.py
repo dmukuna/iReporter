@@ -153,7 +153,9 @@ class UserAttr(User):
 
     def patch(self, user_id, attr):
         """Method for patching a specific red-flag"""
+
         user = [record for record in self.object.findAll() if record['id'] == user_id]
+ develop
         u_id = user[0]['id']
 
         attr = str(attr)
@@ -165,7 +167,6 @@ class UserAttr(User):
         if len(args[attr]) != 0:
             change = args[attr]
             allowed = ['fname', 'lname', 'onames', 'email', 'tel_no', 'user_name', 'is_admin']
-
 
             if len(user) != 0:
                 if attr in allowed:
@@ -187,4 +188,3 @@ class UserAttr(User):
             }), 404)
         return make_response(jsonify({
             "error": "You need to input some text"
-        }))
