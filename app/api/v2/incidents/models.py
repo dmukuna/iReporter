@@ -1,38 +1,43 @@
 """
-red-flags model
+Incidents model
 """
-from ...db_con import init_db
+import psycopg2
+from flask_jwt_extended import get_jwt_identity
+from app.api.db_con import Database
 
 
-class IncidentsModel():
+class IncidentsModel(Database):
     """
     red-flags class
     """
     def __init__(self):
-
-        self.database = init_db()
+        super().__init__('main')
 
     def save(self, data):
         """
         save method
         """
-        query = """INSERT INTO incidents (incident_type, location, status, image, video, comment) 
-        VALUES (%(incident_type)s, %(location)s, %(status)s, %(image)s, %(video)s, %(comment)s);
-        """
-        curr = self.database.cursor()
-        curr.execute(query, data)
-        self.database.commit()
+        query = """INSERT INTO incidents (created_by, incident_type, location, status, image, video, comment) 
+                   VALUES (%(created_by)s, %(incident_type)s, %(location)s, %(status)s, %(image)s, %(video)s, %(comment)s);
+                   """
+        try:
 
-        return data
+            self.cur.execute(query, data)
+            self.commit()
+            print('success')
+            return True
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            print('could not save to db')
+        return None
 
     def get_incidents(self):
         """
         get_red_flags method
         """
         query = """SELECT * FROM incidents;"""
-        curr = self.database.cursor()
-        curr.execute(query)
-        data = curr.fetchall()
+        self.cur.execute(query)
+        data = self.findAll()
         resp = []
 
         for i, record in enumerate(data):
@@ -50,3 +55,11 @@ class IncidentsModel():
             )
             resp.append(data_res)
         return resp
+
+    def current_user(self):
+        """
+            This method gets the logged in user from jwt token.
+            It returns the username.
+        """
+        username = get_jwt_identity()
+        return username
