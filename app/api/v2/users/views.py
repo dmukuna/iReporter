@@ -111,8 +111,8 @@ class User(Users):
     def __init__(self):
         super().__init__()
 
-    def get(self, user_id):
-        user = [record for record in self.object.get_users() if record['id'] == user_id]
+    def get(self, u_id):
+        user = [record for record in self.object.get_users() if record['id'] == u_id]
         if len(user) == 0:
 
             return make_response(jsonify({
@@ -123,13 +123,13 @@ class User(Users):
             "User": user[0]
         }), 200)
 
-    def delete(self, user_id):
+    def delete(self, u_id):
         """Delete a specific User"""
         try:
-            user = [record for record in self.object.get_users()if record['id'] == user_id]
+            user = [record for record in self.object.get_users()if record['id'] == u_id]
             u_id = user[0]['id']
 
-            self.object.findAll().remove(user[0])
+            self.object.get_users().remove(user[0])
 
         except IndexError:
             return make_response(jsonify({
@@ -151,10 +151,10 @@ class UserAttr(User):
     def __init__(self):
         super().__init__()
 
-    def patch(self, user_id, attr):
+    def patch(self, u_id, attr):
         """Method for patching a specific red-flag"""
 
-        user = [record for record in self.object.get_users() if record['id'] == user_id]
+        user = [record for record in self.object.get_users() if record['id'] == u_id]
         u_id = user[0]['id']
 
         attr = str(attr)
