@@ -7,7 +7,7 @@ from flask import jsonify, make_response, request
 from flask_restful import Resource, reqparse
 from datetime import date
 
-from .models import IncidentsModel
+from app.api.v2.incidents.models import IncidentsModel
 
 
 class Incidents(Resource):
@@ -80,7 +80,7 @@ class Incidents(Resource):
                 }))
             else:
                 data = {
-                    "id": len(self.object.database) + 1,
+                    "id": len(self.object.get_incidents()) + 1,
                     "created_by": args['created_by'],
                     "created_on": date.today(),
                     "incident_type": args['incident_type'],
@@ -105,7 +105,7 @@ class Incidents(Resource):
         return make_response(jsonify({
             "status": 200,
             "data": [{
-                "Red-flags": incidents
+                "Incidents": incidents
             }]
         }), 200)
 
@@ -117,23 +117,23 @@ class Incident(Incidents):
 
     #pylint: disable=arguments-differ
     def get(self, flag_id):
-        incident = [record for record in self.object.database if record['id'] == flag_id]
+        incident = [record for record in self.object.get_incidents() if record['id'] == flag_id]
         if len(incident) == 0:
             return make_response(jsonify({
                 "status": 404,
-                "error": "The specified red-flag does not exist"
+                "error": "The specified incident does not exist"
             }), 404)
         return make_response(jsonify({
-            "Red-flag": incident[0]
+            "incident": incident[0]
         }), 200)
 
     def put(self, flag_id):
         """Update a incident record"""
-        incident = [record for record in self.object.database if record['id'] == flag_id]
+        incident = [record for record in self.object.get_incidents() if record['id'] == flag_id]
         if len(incident) == 0:
             return make_response(jsonify({
                 "status": 404,
-                "error": "The specified red-flag does not exist"
+                "error": "The specified incident does not exist"
             }), 404)
         parser = reqparse.RequestParser()
 
@@ -161,6 +161,12 @@ class Incident(Incidents):
                 return make_response(jsonify({
                     "data": [{
                         "message": "Incident type field is required"
+                    }]
+                }))
+            elif len(arg['created_by']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Created By field is required"
                     }]
                 }))
             elif len(arg['location']) == 0:
@@ -203,31 +209,32 @@ class Incident(Incidents):
                 incident[0]['video'] = args['video']
                 incident[0]['comment'] = args['comment']
                 return make_response(jsonify({
-                    "Red-flag": incident[0],
-                    "message": "Redflag updated successfully!"
+                    "incident": incident[0],
+                    "message": "Incident updated successfully!"
                 }), 200)
 
 
     def delete(self, flag_id):
         """Delete a specific Incident"""
         try:
-            incident = [record for record in self.object.database if record['id'] == flag_id]
+            incident = [record for record in self.object.get_incidents() if record['id'] == flag_id]
             inc_id = incident[0]['id']
 
-            self.object.database.remove(incident[0])
+            self.object.findAll().remove(incident[0])
+            self.object.commit()
 
         except IndexError:
             return make_response(jsonify({
                 "status": 404,
                 "data": [{
-                    "message": "The specified red-flag does not exist"
+                    "message": "The specified incident does not exist"
                 }]
             }), 404)
         return make_response(jsonify({
             "status": 200,
             "data": [{
                 "Id": inc_id,
-                "message": "Red-flag has been deleted"
+                "message": "incident has been deleted"
             }]
         }), 200)
 
@@ -239,7 +246,7 @@ class IncidentAttr(Incident):
 
     def patch(self, flag_id, attr):
         """Method for patching a specific red-flag"""
-        incident = [record for record in self.object.database if record['id'] == flag_id]
+        incident = [record for record in self.object.get_incidents() if record['id'] == flag_id]
         rec_id = incident[0]['id']
 
         attr = str(attr)
@@ -259,7 +266,7 @@ class IncidentAttr(Incident):
                         "status": 200,
                         "data": [{
                             "id": rec_id,
-                            "message": "updated red-flag record " + str(attr)
+                            "message": "updated incident record " + str(attr)
                         }]
                     }), 200)
                 elif attr in allowed_media and attr == 'image':
@@ -268,7 +275,7 @@ class IncidentAttr(Incident):
                         "status": 200,
                         "data": [{
                             "id": rec_id,
-                            "message": "updated red-flag's record image"
+                            "message": "updated incident's record image"
                         }]
                     }), 200)
                 elif attr in allowed_media and attr == 'video':
@@ -277,7 +284,7 @@ class IncidentAttr(Incident):
                         "status": 200,
                         "data": [{
                             "id": rec_id,
-                            "message": "updated red-flag's record video"
+                            "message": "updated incident's record video"
                         }]
                     }), 200)
                 return make_response(jsonify({
@@ -286,9 +293,9 @@ class IncidentAttr(Incident):
                 }), 403)
             return make_response(jsonify({
                 "status": 404,
-                "error": "The specified red-flag does not exist"
+                "error": "The specified incident does not exist"
             }), 404)
         else:
             return make_response(jsonify({
-                "error": "You cannot input an empty string"
+                "error": "You need to input the required text"
             }))

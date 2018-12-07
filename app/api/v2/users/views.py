@@ -1,5 +1,6 @@
 from flask import jsonify, make_response, request
 from flask_restful import Resource, reqparse
+from werkzeug.security import generate_password_hash
 
 from .models import UsersModel
 
@@ -18,12 +19,14 @@ class Users(Resource):
                             help="Enter your other names")
         parser.add_argument('email', type=str, nullable=False, required=True, location='json',
                             help="Email field cannot be blank")
-        parser.add_argument('tel', type=str, nullable=False, required=True, location='json',
+        parser.add_argument('tel_no', type=str, nullable=False, required=True, location='json',
                             help="Telephone field cannot be blank")
+        parser.add_argument('password', type=str, nullable=False, required=True, location='json',
+                            help="Password field cannot be blank")
         parser.add_argument('user_name', type=str, nullable=False, required=True, location='json',
                             help="Enter your user name")
-        parser.add_argument('is_admin', type=int, nullable=False, required=True, location='json',
-                            help="video cannot be blank")
+        parser.add_argument('is_admin', type=str, nullable=False, required=True, location='json',
+                            help="is admin cannot be blank")
 
         args = parser.parse_args()
         arg_list = []
@@ -42,7 +45,7 @@ class Users(Resource):
                         "message": "Last name field is required"
                     }]
                 }))
-            elif len(arg['oname']) == 0:
+            elif len(arg['onames']) == 0:
                 return make_response(jsonify({
                     "data": [{
                         "message": "Other name field field is required"
@@ -54,10 +57,16 @@ class Users(Resource):
                         "message": "Email field is required"
                     }]
                 }))
-            elif len(arg['tel']) == 0:
+            elif len(arg['tel_no']) == 0:
                 return make_response(jsonify({
                     "data": [{
                         "message": "Telephone field is required"
+                    }]
+                }))
+            elif len(arg['password']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Password field is required"
                     }]
                 }))
             elif len(arg['user_name']) == 0:
@@ -66,20 +75,15 @@ class Users(Resource):
                         "message": "Username field is required"
                     }]
                 }))
-            elif len(arg['is_admin']) == 0:
-                return make_response(jsonify({
-                    "data": [{
-                        "message": "Is_admin field is required"
-                    }]
-                }))
             else:
+                private_key = generate_password_hash(arg['password'])
                 data = {
-                    "id": len(self.object.database) + 1,
                     "fname": arg['fname'],
                     "lname": arg['lname'],
-                    "oname": arg['oname'],
+                    "onames": arg['onames'],
                     "email": arg['email'],
-                    "tel": arg['tel'],
+                    "tel_no": arg['tel_no'],
+                    "password": private_key,
                     "user_name": arg['user_name'],
                     "is_admin": arg['is_admin']
                 }
@@ -89,7 +93,7 @@ class Users(Resource):
                     "status": 201,
                     "data": [{
                         "id": rec_id,
-                        "message": "Created incident record"
+                        "message": "Created user record"
                     }]
                 }), 201)
 
@@ -108,7 +112,7 @@ class User(Users):
         super().__init__()
 
     def get(self, user_id):
-        user = [record for record in self.object.database if record['id'] == user_id]
+        user = [record for record in self.object.findAll() if record['id'] == user_id]
         if len(user) == 0:
 
             return make_response(jsonify({
@@ -122,10 +126,10 @@ class User(Users):
     def delete(self, user_id):
         """Delete a specific User"""
         try:
-            user = [record for record in self.object.database if record['id'] == user_id]
+            user = [record for record in self.object.findAll() if record['id'] == user_id]
             u_id = user[0]['id']
 
-            self.object.database.remove(user[0])
+            self.object.findAll().remove(user[0])
 
         except IndexError:
             return make_response(jsonify({
@@ -149,7 +153,9 @@ class UserAttr(User):
 
     def patch(self, user_id, attr):
         """Method for patching a specific red-flag"""
-        user = [record for record in self.object.database if record['id'] == user_id]
+
+        user = [record for record in self.object.findAll() if record['id'] == user_id]
+ develop
         u_id = user[0]['id']
 
         attr = str(attr)
@@ -182,4 +188,3 @@ class UserAttr(User):
             }), 404)
         return make_response(jsonify({
             "error": "You need to input some text"
-        }))
