@@ -1,5 +1,6 @@
 from flask import jsonify, make_response, request
 from flask_restful import Resource, reqparse
+from werkzeug.security import generate_password_hash
 
 from .models import UsersModel
 
@@ -20,10 +21,12 @@ class Users(Resource):
                             help="Email field cannot be blank")
         parser.add_argument('tel_no', type=str, nullable=False, required=True, location='json',
                             help="Telephone field cannot be blank")
+        parser.add_argument('password', type=str, nullable=False, required=True, location='json',
+                            help="Password field cannot be blank")
         parser.add_argument('user_name', type=str, nullable=False, required=True, location='json',
                             help="Enter your user name")
-        parser.add_argument('is_admin', type=int, nullable=False, required=True, location='json',
-                            help="video cannot be blank")
+        parser.add_argument('is_admin', type=str, nullable=False, required=True, location='json',
+                            help="is admin cannot be blank")
 
         args = parser.parse_args()
         arg_list = []
@@ -60,6 +63,12 @@ class Users(Resource):
                         "message": "Telephone field is required"
                     }]
                 }))
+            elif len(arg['password']) == 0:
+                return make_response(jsonify({
+                    "data": [{
+                        "message": "Password field is required"
+                    }]
+                }))
             elif len(arg['user_name']) == 0:
                 return make_response(jsonify({
                     "data": [{
@@ -67,12 +76,14 @@ class Users(Resource):
                     }]
                 }))
             else:
+                private_key = generate_password_hash(arg['password'])
                 data = {
                     "fname": arg['fname'],
                     "lname": arg['lname'],
                     "onames": arg['onames'],
                     "email": arg['email'],
                     "tel_no": arg['tel_no'],
+                    "password": private_key,
                     "user_name": arg['user_name'],
                     "is_admin": arg['is_admin']
                 }
@@ -101,7 +112,7 @@ class User(Users):
         super().__init__()
 
     def get(self, user_id):
-        user = [record for record in self.object.database if record['id'] == user_id]
+        user = [record for record in self.object.findAll() if record['id'] == user_id]
         if len(user) == 0:
 
             return make_response(jsonify({
@@ -115,10 +126,10 @@ class User(Users):
     def delete(self, user_id):
         """Delete a specific User"""
         try:
-            user = [record for record in self.object.database if record['id'] == user_id]
+            user = [record for record in self.object.findAll() if record['id'] == user_id]
             u_id = user[0]['id']
 
-            self.object.database.remove(user[0])
+            self.object.findAll().remove(user[0])
 
         except IndexError:
             return make_response(jsonify({
@@ -142,7 +153,7 @@ class UserAttr(User):
 
     def patch(self, user_id, attr):
         """Method for patching a specific red-flag"""
-        user = [record for record in self.object.database if record['id'] == user_id]
+        user = [record for record in self.object.findAll() if record['id'] == user_id]
         u_id = user[0]['id']
 
         attr = str(attr)
