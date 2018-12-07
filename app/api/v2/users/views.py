@@ -112,7 +112,7 @@ class User(Users):
         super().__init__()
 
     def get(self, user_id):
-        user = [record for record in self.object.findAll() if record['id'] == user_id]
+        user = [record for record in self.object.get_users() if record['id'] == user_id]
         if len(user) == 0:
 
             return make_response(jsonify({
@@ -126,7 +126,7 @@ class User(Users):
     def delete(self, user_id):
         """Delete a specific User"""
         try:
-            user = [record for record in self.object.findAll() if record['id'] == user_id]
+            user = [record for record in self.object.get_users()if record['id'] == user_id]
             u_id = user[0]['id']
 
             self.object.findAll().remove(user[0])
@@ -154,8 +154,7 @@ class UserAttr(User):
     def patch(self, user_id, attr):
         """Method for patching a specific red-flag"""
 
-        user = [record for record in self.object.findAll() if record['id'] == user_id]
- develop
+        user = [record for record in self.object.get_users() if record['id'] == user_id]
         u_id = user[0]['id']
 
         attr = str(attr)
@@ -188,3 +187,4 @@ class UserAttr(User):
             }), 404)
         return make_response(jsonify({
             "error": "You need to input some text"
+        }))

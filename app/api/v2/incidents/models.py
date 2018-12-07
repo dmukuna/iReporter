@@ -43,7 +43,7 @@ class IncidentsModel(Database):
         for i, record in enumerate(data):
             incident_id, created_on, created_by, incident_type, location, status, image, video, comment = record
             data_res = dict(
-                incident_id=int(incident_id),
+                id=int(incident_id),
                 created_on=created_on,
                 created_by=int(created_by),
                 incident_type=incident_type,
